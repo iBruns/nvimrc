@@ -1,0 +1,10 @@
+# Neovim plugin manager lock file
+lazy-lock.json
+
+# Neovim's swap and backup files
+# Exclude files ending with .swp or .swo (swap files)
+*.swp
+*.swo
+
+# Exclude backup files created with the 'backup' option
+*.bak
