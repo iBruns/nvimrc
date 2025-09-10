@@ -35,7 +35,7 @@ vim.opt.showmode = true
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
+	vim.o.clipboard = "unnamedplus"
 end)
 
 vim.o.breakindent = true
@@ -44,7 +44,7 @@ vim.o.breakindent = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
-vim.o.signcolumn = 'yes'
+vim.o.signcolumn = "yes"
 
 vim.o.cursorline = true
 
