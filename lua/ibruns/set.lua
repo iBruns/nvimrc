@@ -1,4 +1,9 @@
-vim.opt.guicursor = ""
+vim.opt.guicursor = {
+  "n-v-c:block",      -- Normal, Visual, Command: block cursor
+  "i-ci-ve:ver25",    -- Insert, Command-line Insert, Visual-Ex: vertical bar with 25% width
+  "r-cr:hor20",       -- Replace, Command-line Replace: horizontal bar 20% height
+  "o:hor50",          -- Operator-pending: horizontal bar 50% height
+}
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -50,4 +55,3 @@ vim.o.cursorline = true
 
 vim.o.scrolloff = 10
 
---vim.opt.colorcolumn = "120"
