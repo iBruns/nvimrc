@@ -1,33 +1,9 @@
 require("ibruns.set")
 require("ibruns.remap")
-require("ibruns.lazy_init")
-
--- Restore cursor to last position when reopening a file
-vim.api.nvim_create_autocmd("BufReadPost", {
-	pattern = "*",
-	callback = function()
-		local last_pos = vim.fn.line([['"]])
-		if last_pos > 0 and last_pos <= vim.fn.line("$") then
-			pcall(vim.api.nvim_win_set_cursor, 0, { last_pos, 0 })
-		end
-	end,
-})
 
 local augroup = vim.api.nvim_create_augroup
-local ThePrimeagenGroup = augroup("ThePrimeagen", {})
-
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup("HighlightYank", {})
-
-function R(name)
-	require("plenary.reload").reload_module(name)
-end
-
-vim.filetype.add({
-	extension = {
-		templ = "templ",
-	},
-})
 
 autocmd("TextYankPost", {
 	group = yank_group,
@@ -35,19 +11,18 @@ autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank({
 			higroup = "IncSearch",
-			timeout = 40,
+			timeout = 200,
 		})
 	end,
 })
 
-autocmd({ "BufWritePre" }, {
-	group = ThePrimeagenGroup,
-	pattern = "*",
-	command = [[%s/\s\+$//e]],
-})
+-- Sync clipboard between OS and Neovim.
+vim.schedule(function()
+	vim.o.clipboard = "unnamedplus"
+end)
 
 autocmd("LspAttach", {
-	group = ThePrimeagenGroup,
+    group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 	callback = function(e)
 		local opts = { buffer = e.buf }
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition", buffer = e.buf })
@@ -65,21 +40,20 @@ autocmd("LspAttach", {
 	end,
 })
 
-vim.lsp.config("roslyn", {
-	on_attach = function()
-		print("This will run when the server attaches!")
-	end,
-	settings = {
-		["csharp|inlay_hints"] = {
-			csharp_enable_inlay_hints_for_implicit_object_creation = true,
-			csharp_enable_inlay_hints_for_implicit_variable_types = true,
-		},
-		["csharp|code_lens"] = {
-			dotnet_enable_references_code_lens = true,
-		},
-	},
-})
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.g.netrw_browse_split = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
+require("lazy").setup({
+    spec = "ibruns.plugin",
+    change_detection = { notify = false }
+})
