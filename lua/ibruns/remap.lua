@@ -11,10 +11,10 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 vim.keymap.set("n", "<leader>vwm", function()
-	require("vim-with-me").StartVimWithMe()
+    require("vim-with-me").StartVimWithMe()
 end)
 vim.keymap.set("n", "<leader>svwm", function()
-	require("vim-with-me").StopVimWithMe()
+    require("vim-with-me").StopVimWithMe()
 end)
 
 -- greatest remap ever
@@ -52,5 +52,49 @@ vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/the
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 
 vim.keymap.set("n", "<leader><leader>", function()
-	vim.cmd("so")
+    vim.cmd("so")
 end)
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
+    callback = function(event)
+        local opts = { buffer = event.buf, silent = true }
+
+        local map = vim.keymap.set
+
+        opts.desc = "Go to Definition"
+        map("n", "gd", vim.lsp.buf.definition, opts)
+
+        opts.desc = "Hover"
+        map("n", "K", vim.lsp.buf.hover, opts)
+
+        opts.desc = "Workspace Symbols"
+        map("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+
+        opts.desc = "Open Diagnostic Float"
+        map("n", "<leader>vd", vim.diagnostic.open_float, opts)
+
+        opts.desc = "Open diagnostic [Q]uickfix list"
+        map("n", "<leader>q", vim.diagnostic.setloclist, opts)
+
+        opts.desc = "Code Action"
+        map("n", "<leader>vca", function()
+            require("actions-preview").code_actions()
+        end, opts)
+
+        opts.desc = "Find References"
+        map("n", "<leader>vrr", vim.lsp.buf.references, opts)
+
+        opts.desc = "Rename Symbol"
+        map("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+
+        opts.desc = "Signature Help"
+        map("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+
+        opts.desc = "Next Diagnostic"
+        map("n", "[d", vim.diagnostic.goto_next, opts)
+
+        opts.desc = "Previous Diagnostic"
+        map("n", "]d", vim.diagnostic.goto_prev, opts)
+    end,
+})

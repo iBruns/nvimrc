@@ -33,45 +33,6 @@ return {
         ---------------------------------------------------------------------------
         local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-        local on_attach = function(_, bufnr)
-            local opts = { buffer = bufnr, silent = true }
-
-            opts.desc = "Go to Definition"
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-
-            opts.desc = "Hover"
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-            opts.desc = "Workspace Symbols"
-            vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
-
-            opts.desc = "Open Diagnostic Float"
-            vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-
-            opts.desc = "Open diagnostic [Q]uickfix list"
-            vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-
-            opts.desc = "Code Action"
-            vim.keymap.set("n", "<leader>vca", function()
-                require("actions-preview").code_actions()
-            end, opts)
-
-            opts.desc = "Find References"
-            vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-
-            opts.desc = "Rename Symbol"
-            vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
-
-            opts.desc = "Signature Help"
-            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-
-            opts.desc = "Next Diagnostic"
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-
-            opts.desc = "Previous Diagnostic"
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-        end
-
         ---------------------------------------------------------------------------
         -- 4. Diagnostics UI
         ---------------------------------------------------------------------------
@@ -107,7 +68,7 @@ return {
         -- 5. Lua LS (via mason)
         ---------------------------------------------------------------------------
         vim.lsp.config('lua_ls', {
-            on_attach = on_attach,
+            -- on_attach = on_attach,
             capabilities = capabilities,
             settings = {
                 Lua = {
