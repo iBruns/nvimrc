@@ -1,8 +1,8 @@
 vim.opt.guicursor = {
-  "n-v-c:block",      -- Normal, Visual, Command: block cursor
-  "i-ci-ve:ver25",    -- Insert, Command-line Insert, Visual-Ex: vertical bar with 25% width
-  "r-cr:hor20",       -- Replace, Command-line Replace: horizontal bar 20% height
-  "o:hor50",          -- Operator-pending: horizontal bar 50% height
+    "n-v-c:block",   -- Normal, Visual, Command: block cursor
+    "i-ci-ve:ver25", -- Insert, Command-line Insert, Visual-Ex: vertical bar with 25% width
+    "r-cr:hor20",    -- Replace, Command-line Replace: horizontal bar 20% height
+    "o:hor50",       -- Operator-pending: horizontal bar 50% height
 }
 
 vim.opt.nu = true
@@ -40,7 +40,7 @@ vim.opt.showmode = true
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
+    vim.o.clipboard = "unnamedplus"
 end)
 
 vim.o.breakindent = true
@@ -54,4 +54,3 @@ vim.o.signcolumn = "yes"
 vim.o.cursorline = true
 
 vim.o.scrolloff = 10
-
